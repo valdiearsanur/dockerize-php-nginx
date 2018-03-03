@@ -9,6 +9,7 @@ services:
     volumes:
       - ../workspace:/home/workspace:ro
       - ./nginx/sites/site.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/log:/var/log/nginx
     links:
       - dev-php:fpm_php
 
