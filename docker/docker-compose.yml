@@ -6,3 +6,6 @@ services:
     container_name: dev-nginx
     ports:
       - "8080:80"
+    volumes:
+      - ../workspace:/home/workspace:ro
+      - ./nginx/sites/site.conf:/etc/nginx/conf.d/default.conf:ro
