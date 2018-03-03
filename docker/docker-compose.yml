@@ -1,0 +1,8 @@
+version: '2.1'
+services:
+  dev-nginx:
+    restart: always
+    image: nginx:latest
+    container_name: dev-nginx
+    ports:
+      - "8080:80"
