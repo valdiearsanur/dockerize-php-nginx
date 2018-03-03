@@ -23,7 +23,7 @@ Attaching to dev-nginx
 ```
 Buka localhost:8080 dan berikut adalah hasilnya:
 
-[ss 1]
+![nginx at localhost:8080](https://raw.githubusercontent.com/valdiearsanur/dockerize-php-nginx/master/readme_asset/1.png)
 
 Selanjutya kita dapat menambahkan project pada nginx. Nginx mempunyai konfigurasi default.conf yang berada pada container. Kita dapat menimpa (override) file tersebut dengan melakukan mapping volume pada file composer. Sebagai contoh kita akan membuat file `./docker/nginx/sites/site.conf` yang akan mengoverride `default.conf` milik container
 
@@ -61,7 +61,7 @@ Pada site.conf, konfigurasi root folder dari webhost kita berada pada `/home/wor
 
 setelah itu deploy tekan ctrl+c pada terminal dan lakukan `docker-compose up` lagi. Hasilnya sebagai berikut:
 
-[ss 4]
+![nginx at localhost:8080](https://raw.githubusercontent.com/valdiearsanur/dockerize-php-nginx/master/readme_asset/2.png)
 
 Sampai di sini kita sudah berhasil membuat web server, namun NGINX ini tidak mengenali file .php. Selanjutnya kita akan menambakan PHP FPM (FastCGI Process Manager). Kita perlu menambahkan 1 buah container pada file docker compose
 
@@ -111,7 +111,7 @@ Untuk memastikan web server kita sudah bisa membaca file php, kita akan menghapu
 
 setelah itu deploy tekan ctrl+c pada terminal dan lakukan `docker-compose up` lagi. Hasilnya dapat dilihat seperti gambar di bawah:
 
-[ss 3]
+![nginx at localhost:8080](https://raw.githubusercontent.com/valdiearsanur/dockerize-php-nginx/master/readme_asset/3.png)
 
 Kita sudah berhasil membuat project php kita berjalan di atas container docker, yang artinya kita mempunyai project yang siap untuk di deploy di komputer manapun hanya dengan `docker compose up` tanpa perlu memikirkan versi php, web server, konfigurasi, dsb.
 
