@@ -135,5 +135,60 @@ File tersebut masih terdapat pada container nginx, sehingga kita tidak dapat sec
 
 setelah itu deploy tekan ctrl+c pada terminal dan lakukan `docker-compose up` lagi. Setelah itu kita akan melihat file `./docker/nginx/log/access.log` dan `./docker/nginx/log/access.log` yang artinya file log berhasil kita mapping.
 
+## (Tambahan) Dengan mongodb
+
+Tambahkan code berikut pada `docker-compose.yml`
+``` diff
+-------------------------- docker-compose.yml --------------------------
+   dev-php:
+     restart: always
+     container_name: dev-php
+     volumes:
+       - ../workspace:/home/workspace:ro
++
++  dev-mongo:
++    restart: always
++    image: mongo:3.7
++    container_name: dev-mongo
++    ports:
++      - "27017:27017"
++    volumes:
++      - ../workspace:/home/workspace
+```
+
+Selanjutnya FPM perlu dimodifikasi agar berisikan ekstensi mongodb, tambahkan `Dockerfile` pada direktori `./docker/dockerfiles/php-fpm71` (buat folder tersebut, jika belum ada) :
+
+``` diff
+----------------------------- Dockerfile -----------------------------
++FROM php:7.1.9-fpm
++MAINTAINER Valdie <valdiearsanur@gmail.com>
++
++ADD php.ini /usr/local/etc/php/conf.d/php.ini
++
++RUN apt-get update \
++  && docker-php-ext-install pdo_mysql mysqli mbstring
++
++RUN apt-get update \
++  && apt-get install -y git libmemcached-dev zlib1g-dev \
++  && pecl install mongodb-1.4.2 \
++  && pecl install memcached-3.0.3 \
++  && pecl install xdebug-2.6.0 \
++  && docker-php-ext-enable mongodb memcached opcache xdebug
++
++COPY --from=composer:1.6 /usr/bin/composer /usr/bin/composer
+```
+
+Modifikasi kembali `docker-compose.yml` agar dapat membaca dockerfile yang telah dibuat :
+``` diff
+-------------------------- docker-compose.yml --------------------------
+   dev-php:
+     restart: always
+-    image: php:7-fpm
++    build: ./dockerfiles/php-fpm71
+     container_name: dev-php
+     volumes:
+```
+
+Setelah itu deploy kembali container dengan melakukan perintah `docker-compose up --force-recreate --build`.
 
 Project ini hanyalah contoh sederhana dengan stack standar, yaitu Web Server dan PHP. Kebutuhan project kalian mungkin bisa berbeda-beda, misalnya database, caching, balancer, dsb. Selanjutnya kalian perlu menambahkan container sesuai dengan stack pada project.

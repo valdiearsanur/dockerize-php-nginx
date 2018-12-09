@@ -15,7 +15,14 @@ services:
 
   dev-php:
     restart: always
-    image: php:7-fpm
+    build: ./dockerfiles/php-fpm71
     container_name: dev-php
     volumes:
-      - ../workspace:/home/workspace:ro
+      - ../workspace:/home/workspace
+
+  dev-mongo:
+    restart: always
+    image: mongo:3.7
+    container_name: dev-mongo
+    ports:
+      - "27017:27017"
